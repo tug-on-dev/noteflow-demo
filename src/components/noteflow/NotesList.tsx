@@ -60,6 +60,7 @@ function NotesList({
       case "notebook": return t('notebook');
       case "tag": return t('taggedNotes');
       case "trash": return t('trash');
+      default: return t('allNotes');
     }
   };
 

@@ -14,6 +14,7 @@ export default function LanguageSwitcher() {
       {routing.locales.map((l) => (
         <button
           key={l}
+          data-testid={`lang-${l}`}
           onClick={() => router.replace(pathname, { locale: l })}
           className={`px-1.5 py-0.5 text-xs rounded transition-colors ${
             l === locale
