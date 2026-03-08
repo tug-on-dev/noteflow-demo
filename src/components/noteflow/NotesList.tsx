@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, Fragment } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { Plus, Pin, PinOff, Trash2, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatRelativeTime } from "@/lib/storage";
@@ -35,19 +36,6 @@ function highlightMatches(text: string, query: string) {
   );
 }
 
-function getViewTitle(view: SidebarView) {
-  switch (view) {
-    case "all":
-      return "All Notes";
-    case "notebook":
-      return "Notebook";
-    case "tag":
-      return "Tagged Notes";
-    case "trash":
-      return "Trash";
-  }
-}
-
 function NotesList({
   notes,
   selectedNoteId,
@@ -61,7 +49,19 @@ function NotesList({
   onPermanentlyDelete,
   onEmptyTrash,
 }: NotesListProps) {
+  const t = useTranslations('notesList');
+  const tCommon = useTranslations('common');
+  const locale = useLocale();
   const isTrash = sidebarView === "trash";
+
+  const getViewTitle = (view: SidebarView) => {
+    switch (view) {
+      case "all": return t('allNotes');
+      case "notebook": return t('notebook');
+      case "tag": return t('taggedNotes');
+      case "trash": return t('trash');
+    }
+  };
 
   const sortedNotes = useMemo(() => {
     const pinned = notes.filter((n) => n.isPinned);
@@ -89,7 +89,7 @@ function NotesList({
               onClick={onEmptyTrash}
               className="rounded-md px-2 py-1 text-xs text-destructive hover:bg-destructive/10"
             >
-              Empty Trash
+              {t('emptyTrash')}
             </button>
           )}
           {!isTrash && (
@@ -97,7 +97,7 @@ function NotesList({
               data-testid="new-note-btn"
               onClick={onCreateNote}
               className="rounded-md p-1 hover:bg-accent"
-              aria-label="New Note"
+              aria-label={t('newNote')}
             >
               <Plus className="h-4 w-4" />
             </button>
@@ -110,23 +110,23 @@ function NotesList({
         {sortedNotes.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-2 px-4 py-12 text-center text-sm text-muted-foreground">
             {isTrash ? (
-              <p>Trash is empty</p>
+              <p>{t('trashEmpty')}</p>
             ) : (
               <>
-                <p>No notes yet</p>
+                <p>{t('noNotes')}</p>
                 <button
                   onClick={onCreateNote}
                   className="mt-1 inline-flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90"
                 >
                   <Plus className="h-3 w-3" />
-                  Create your first note
+                  {t('createFirst')}
                 </button>
               </>
             )}
           </div>
         ) : (
           sortedNotes.map((note) => {
-            const title = note.title || "Untitled";
+            const title = note.title || tCommon('untitled');
             const preview = truncate(note.plainText, 100);
             const isSelected = note.id === selectedNoteId;
 
@@ -182,7 +182,7 @@ function NotesList({
                 {/* Footer: time + actions */}
                 <div className="mt-1 flex items-center justify-between">
                   <span className="text-[11px] text-muted-foreground">
-                    {formatRelativeTime(note.updatedAt)}
+                    {formatRelativeTime(note.updatedAt, locale)}
                   </span>
 
                   {isTrash ? (
@@ -194,7 +194,7 @@ function NotesList({
                           onRestoreNote?.(note.id);
                         }}
                         className="rounded p-0.5 hover:bg-accent"
-                        aria-label="Restore note"
+                        aria-label={t('restoreNote')}
                       >
                         <RotateCcw className="h-3.5 w-3.5" />
                       </button>
@@ -205,7 +205,7 @@ function NotesList({
                           onPermanentlyDelete?.(note.id);
                         }}
                         className="rounded p-0.5 text-destructive hover:bg-destructive/10"
-                        aria-label="Delete permanently"
+                        aria-label={t('deletePermanently')}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -218,7 +218,7 @@ function NotesList({
                           onTogglePin(note.id, note.isPinned);
                         }}
                         className="rounded p-0.5 hover:bg-accent"
-                        aria-label={note.isPinned ? "Unpin note" : "Pin note"}
+                        aria-label={note.isPinned ? t('unpinNote') : t('pinNote')}
                       >
                         {note.isPinned ? (
                           <PinOff className="h-3.5 w-3.5" />
@@ -232,7 +232,7 @@ function NotesList({
                           onDeleteNote(note.id);
                         }}
                         className="rounded p-0.5 text-destructive hover:bg-destructive/10"
-                        aria-label="Delete note"
+                        aria-label={t('deleteNote')}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>

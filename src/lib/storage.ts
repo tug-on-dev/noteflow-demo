@@ -124,7 +124,7 @@ export function getStorageUsage(): { used: number; max: number; percentage: numb
   return { used, max, percentage: (used / max) * 100 };
 }
 
-export function formatRelativeTime(dateString: string): string {
+export function formatRelativeTime(dateString: string, locale: string = 'en'): string {
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
@@ -133,11 +133,13 @@ export function formatRelativeTime(dateString: string): string {
   const diffHour = Math.floor(diffMin / 60);
   const diffDay = Math.floor(diffHour / 24);
 
-  if (diffSec < 60) return "just now";
-  if (diffMin < 60) return `${diffMin} min ago`;
-  if (diffHour < 24) return `${diffHour} hour${diffHour > 1 ? "s" : ""} ago`;
-  if (diffDay < 7) return `${diffDay} day${diffDay > 1 ? "s" : ""} ago`;
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+
+  if (diffSec < 60) return rtf.format(0, 'second');
+  if (diffMin < 60) return rtf.format(-diffMin, 'minute');
+  if (diffHour < 24) return rtf.format(-diffHour, 'hour');
+  if (diffDay < 7) return rtf.format(-diffDay, 'day');
+  return date.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 export function getPlainText(html: string): string {

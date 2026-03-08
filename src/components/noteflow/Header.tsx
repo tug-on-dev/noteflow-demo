@@ -1,6 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Search, X, Sun, Moon, Monitor, BookOpen } from "lucide-react";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface HeaderProps {
   searchQuery: string;
@@ -29,6 +31,9 @@ export default function Header({
   onThemeChange,
   searchInputRef,
 }: HeaderProps) {
+  const t = useTranslations('header');
+  const tCommon = useTranslations('common');
+
   const cycleTheme = () => {
     const nextIndex = (themeOrder.indexOf(theme) + 1) % themeOrder.length;
     onThemeChange(themeOrder[nextIndex]);
@@ -44,7 +49,7 @@ export default function Header({
       {/* Left: Logo */}
       <div className="flex items-center gap-1.5 text-foreground">
         <BookOpen className="h-5 w-5" />
-        <span className="text-sm font-semibold">NoteFlow</span>
+        <span className="text-sm font-semibold">{tCommon('appName')}</span>
       </div>
 
       {/* Center: Search */}
@@ -55,7 +60,7 @@ export default function Header({
             ref={searchInputRef}
             data-testid="search-input"
             type="text"
-            placeholder="Search notes..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="w-full rounded-lg bg-muted px-3 py-1.5 pl-8 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
@@ -72,15 +77,18 @@ export default function Header({
         </div>
       </div>
 
-      {/* Right: Theme toggle */}
-      <button
-        data-testid="theme-toggle"
-        onClick={cycleTheme}
-        className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
-        aria-label={`Theme: ${theme}`}
-      >
-        <ThemeIcon className="h-4 w-4" />
-      </button>
+      {/* Right: Language switcher + Theme toggle */}
+      <div className="flex items-center gap-2">
+        <LanguageSwitcher />
+        <button
+          data-testid="theme-toggle"
+          onClick={cycleTheme}
+          className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+          aria-label={`Theme: ${theme}`}
+        >
+          <ThemeIcon className="h-4 w-4" />
+        </button>
+      </div>
     </header>
   );
 }

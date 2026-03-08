@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { useNoteFlow } from "@/hooks/useNoteFlow";
 import Header from "@/components/noteflow/Header";
 import Sidebar from "@/components/noteflow/Sidebar";
@@ -10,6 +11,7 @@ import { exportAsMarkdown, exportAsText } from "@/lib/export";
 import { ArrowLeft } from "lucide-react";
 
 export default function Home() {
+  const t = useTranslations('common');
   const {
     data,
     appState,
@@ -104,7 +106,7 @@ export default function Home() {
   if (!data) {
     return (
       <div className="h-screen flex items-center justify-center bg-background text-foreground">
-        <div className="animate-pulse text-lg">Loading NoteFlow...</div>
+        <div className="animate-pulse text-lg">{t('loading')}</div>
       </div>
     );
   }
@@ -150,10 +152,10 @@ export default function Home() {
             <button
               className="md:hidden flex items-center gap-1 px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
               onClick={() => setMobilePanel("sidebar")}
-              aria-label="Back to sidebar"
+              aria-label={t('backToSidebar')}
             >
               <ArrowLeft className="h-4 w-4" />
-              Back
+              {t('back')}
             </button>
             <NotesList
               notes={filteredNotes}
@@ -181,10 +183,10 @@ export default function Home() {
           <button
             className="md:hidden flex items-center gap-1 px-3 py-2 text-sm text-muted-foreground hover:text-foreground border-b border-border"
             onClick={() => setMobilePanel("list")}
-            aria-label="Back to notes list"
+            aria-label={t('backToNotes')}
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to notes
+            {t('backToNotes')}
           </button>
           <NoteEditor
             note={selectedNote}

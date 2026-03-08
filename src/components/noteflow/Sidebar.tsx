@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import {
   BookOpen,
   Plus,
@@ -36,6 +37,8 @@ export default function Sidebar({
   onRenameNotebook,
   onDeleteNotebook,
 }: SidebarProps) {
+  const t = useTranslations('sidebar');
+  const tCommon = useTranslations('common');
   const [contextMenu, setContextMenu] = useState<{
     notebookId: string;
     x: number;
@@ -105,11 +108,11 @@ export default function Sidebar({
   const handleDeleteNotebook = useCallback(
     (id: string, name: string) => {
       setContextMenu(null);
-      if (window.confirm(`Delete notebook "${name}"? Notes will be moved to Trash.`)) {
+      if (window.confirm(t('deleteNotebookConfirm', { name }))) {
         onDeleteNotebook(id);
       }
     },
-    [onDeleteNotebook]
+    [onDeleteNotebook, t]
   );
 
   const isActive = (view: SidebarView, id?: string) => {
@@ -147,7 +150,7 @@ export default function Sidebar({
           onClick={() => onSelectView("all")}
         >
           <FileText className="size-4 shrink-0" />
-          <span className="truncate">All Notes</span>
+          <span className="truncate">{t('allNotes')}</span>
         </button>
       </div>
 
@@ -162,7 +165,7 @@ export default function Sidebar({
               notebooksExpanded ? "" : "-rotate-90"
             }`}
           />
-          Notebooks
+          {t('notebooks')}
         </button>
 
         {notebooksExpanded && (
@@ -220,7 +223,7 @@ export default function Sidebar({
               onClick={() => onCreateNotebook()}
             >
               <Plus className="size-4 shrink-0" />
-              <span>New Notebook</span>
+              <span>{t('newNotebook')}</span>
             </button>
           </div>
         )}
@@ -237,14 +240,14 @@ export default function Sidebar({
               tagsExpanded ? "" : "-rotate-90"
             }`}
           />
-          Tags
+          {t('tags')}
         </button>
 
         {tagsExpanded && (
           <div className="flex flex-col gap-0.5">
             {allTags.length === 0 && (
               <span className="px-3 py-1 text-xs text-sidebar-foreground/40">
-                No tags yet
+                {t('noTags')}
               </span>
             )}
             {allTags.map(({ tag, count }) => (
@@ -276,7 +279,7 @@ export default function Sidebar({
           onClick={() => onSelectView("trash")}
         >
           <Trash2 className="size-4 shrink-0" />
-          <span className="flex-1 truncate text-left">Trash</span>
+          <span className="flex-1 truncate text-left">{t('trash')}</span>
           {trashCount > 0 && (
             <span className="ml-auto text-xs bg-sidebar-accent text-sidebar-accent-foreground px-1.5 py-0.5 rounded-full tabular-nums">
               {trashCount}
@@ -302,14 +305,14 @@ export default function Sidebar({
                   onClick={() => startRename(nb.id, nb.name)}
                 >
                   <Pencil className="size-3.5" />
-                  Rename
+                  {tCommon('rename')}
                 </button>
                 <button
                   className="flex items-center gap-2 w-full px-3 py-1.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
                   onClick={() => handleDeleteNotebook(nb.id, nb.name)}
                 >
                   <Trash2 className="size-3.5" />
-                  Delete
+                  {tCommon('delete')}
                 </button>
               </>
             );
