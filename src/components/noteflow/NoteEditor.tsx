@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -104,6 +105,9 @@ function NoteEditor({
   onExportText,
   allExistingTags,
 }: NoteEditorProps) {
+  const t = useTranslations('editor');
+  const tCommon = useTranslations('common');
+  const locale = useLocale();
   const [tagInput, setTagInput] = useState("");
   const [showTagSuggestions, setShowTagSuggestions] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
@@ -119,7 +123,7 @@ function NoteEditor({
       TaskItem.configure({ nested: true }),
       CodeBlock,
       Highlight,
-      Placeholder.configure({ placeholder: "Start writing..." }),
+      Placeholder.configure({ placeholder: t('startWriting') }),
     ],
     editable: !isReadOnly,
     content: note?.content ?? "",
@@ -205,7 +209,7 @@ function NoteEditor({
       >
         <div className="text-center">
           <FileText className="h-12 w-12 mx-auto mb-3 opacity-50" />
-          <p className="text-lg">Select a note or create a new one</p>
+          <p className="text-lg">{t('selectOrCreate')}</p>
         </div>
       </div>
     );
@@ -227,13 +231,13 @@ function NoteEditor({
             value={note.title}
             onChange={handleTitleChange}
             readOnly={isReadOnly}
-            placeholder="Untitled"
+            placeholder={tCommon('untitled')}
             className="flex-1 text-2xl font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/50"
           />
           <div className="flex items-center gap-1">
             <button
               type="button"
-              title={note.isPinned ? "Unpin note" : "Pin note"}
+              title={note.isPinned ? t('unpinNote') : t('pinNote')}
               onClick={() =>
                 onUpdateNote(note.id, { isPinned: !note.isPinned })
               }
@@ -248,7 +252,7 @@ function NoteEditor({
             </button>
             <button
               type="button"
-              title="Export as Markdown"
+              title={t('exportMarkdown')}
               onClick={() => onExportMarkdown(note)}
               className="p-1.5 rounded text-muted-foreground hover:text-foreground transition-colors"
             >
@@ -256,7 +260,7 @@ function NoteEditor({
             </button>
             <button
               type="button"
-              title="Export as Text"
+              title={t('exportText')}
               onClick={() => onExportText(note)}
               className="p-1.5 rounded text-muted-foreground hover:text-foreground transition-colors"
             >
@@ -265,7 +269,7 @@ function NoteEditor({
             {!isReadOnly && (
               <button
                 type="button"
-                title="Delete note"
+                title={t('deleteNote')}
                 onClick={() => onDeleteNote(note.id)}
                 className="p-1.5 rounded text-muted-foreground hover:text-destructive transition-colors"
               >
@@ -279,7 +283,7 @@ function NoteEditor({
       {/* Deleted note banner */}
       {isReadOnly && (
         <div className="bg-destructive/10 text-destructive px-4 py-2 text-sm flex-shrink-0">
-          This note is in the trash and cannot be edited.
+          {t('trashBanner')}
         </div>
       )}
 
@@ -292,21 +296,21 @@ function NoteEditor({
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleBold().run()}
             active={editor.isActive("bold")}
-            title="Bold"
+            title={t('toolbar.bold')}
           >
             <Bold size={iconSize} />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleItalic().run()}
             active={editor.isActive("italic")}
-            title="Italic"
+            title={t('toolbar.italic')}
           >
             <Italic size={iconSize} />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleStrike().run()}
             active={editor.isActive("strike")}
-            title="Strikethrough"
+            title={t('toolbar.strikethrough')}
           >
             <Strikethrough size={iconSize} />
           </ToolbarButton>
@@ -318,7 +322,7 @@ function NoteEditor({
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
             active={editor.isActive("heading", { level: 1 })}
-            title="Heading 1"
+            title={t('toolbar.heading1')}
           >
             <Heading1 size={iconSize} />
           </ToolbarButton>
@@ -327,7 +331,7 @@ function NoteEditor({
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
             active={editor.isActive("heading", { level: 2 })}
-            title="Heading 2"
+            title={t('toolbar.heading2')}
           >
             <Heading2 size={iconSize} />
           </ToolbarButton>
@@ -336,7 +340,7 @@ function NoteEditor({
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
             active={editor.isActive("heading", { level: 3 })}
-            title="Heading 3"
+            title={t('toolbar.heading3')}
           >
             <Heading3 size={iconSize} />
           </ToolbarButton>
@@ -346,21 +350,21 @@ function NoteEditor({
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             active={editor.isActive("bulletList")}
-            title="Bullet List"
+            title={t('toolbar.bulletList')}
           >
             <List size={iconSize} />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             active={editor.isActive("orderedList")}
-            title="Ordered List"
+            title={t('toolbar.orderedList')}
           >
             <ListOrdered size={iconSize} />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleTaskList().run()}
             active={editor.isActive("taskList")}
-            title="Task List"
+            title={t('toolbar.taskList')}
           >
             <CheckSquare size={iconSize} />
           </ToolbarButton>
@@ -370,20 +374,20 @@ function NoteEditor({
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             active={editor.isActive("codeBlock")}
-            title="Code Block"
+            title={t('toolbar.codeBlock')}
           >
             <Code size={iconSize} />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             active={editor.isActive("blockquote")}
-            title="Blockquote"
+            title={t('toolbar.blockquote')}
           >
             <Quote size={iconSize} />
           </ToolbarButton>
           <ToolbarButton
             onClick={() => editor.chain().focus().setHorizontalRule().run()}
-            title="Horizontal Rule"
+            title={t('toolbar.horizontalRule')}
           >
             <Minus size={iconSize} />
           </ToolbarButton>
@@ -437,7 +441,7 @@ function NoteEditor({
                 onBlur={() =>
                   setTimeout(() => setShowTagSuggestions(false), 150)
                 }
-                placeholder="Add tag..."
+                placeholder={t('addTag')}
                 className="text-xs bg-transparent border border-dashed border-border rounded-full px-2 py-0.5 w-24 outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/50"
               />
               {showTagSuggestions && filteredTagSuggestions.length > 0 && (
@@ -462,8 +466,8 @@ function NoteEditor({
 
       {/* Metadata footer */}
       <div className="border-t px-4 py-2 flex-shrink-0 text-xs text-muted-foreground flex items-center gap-4">
-        <span>Created {formatRelativeTime(note.createdAt)}</span>
-        <span>Updated {formatRelativeTime(note.updatedAt)}</span>
+        <span>{t('created', { time: formatRelativeTime(note.createdAt, locale) })}</span>
+        <span>{t('updated', { time: formatRelativeTime(note.updatedAt, locale) })}</span>
       </div>
     </div>
   );
