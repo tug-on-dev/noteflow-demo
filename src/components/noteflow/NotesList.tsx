@@ -74,6 +74,8 @@ function NotesList({
     return text.slice(0, max).trimEnd() + "…";
   }, []);
 
+  const untitledLabel = tCommon('untitled');
+
   return (
     <div
       data-testid="notes-list"
@@ -126,7 +128,7 @@ function NotesList({
           </div>
         ) : (
           sortedNotes.map((note) => {
-            const title = note.title || tCommon('untitled');
+            const title = note.title || untitledLabel;
             const preview = truncate(note.plainText, 100);
             const isSelected = note.id === selectedNoteId;
 
