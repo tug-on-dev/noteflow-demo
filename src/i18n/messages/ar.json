@@ -1,0 +1,72 @@
+{
+  "metadata": {
+    "title": "NoteFlow — تدوين الملاحظات الحديث",
+    "description": "تطبيق خاص لتدوين الملاحظات دون اتصال بالإنترنت"
+  },
+  "common": {
+    "appName": "NoteFlow",
+    "loading": "جار تحميل NoteFlow...",
+    "untitled": "بدون عنوان",
+    "back": "رجوع",
+    "backToSidebar": "العودة إلى الشريط الجانبي",
+    "backToNotes": "العودة إلى الملاحظات",
+    "rename": "إعادة تسمية",
+    "delete": "حذف",
+    "cancel": "إلغاء"
+  },
+  "header": {
+    "searchPlaceholder": "البحث في الملاحظات..."
+  },
+  "sidebar": {
+    "allNotes": "جميع الملاحظات",
+    "notebooks": "الدفاتر",
+    "tags": "الوسوم",
+    "trash": "المهملات",
+    "newNotebook": "دفتر جديد",
+    "noTags": "لا توجد وسوم بعد",
+    "deleteNotebookConfirm": "حذف الدفتر \"{name}\"؟ ستُنقل الملاحظات إلى المهملات."
+  },
+  "notesList": {
+    "allNotes": "جميع الملاحظات",
+    "notebook": "الدفتر",
+    "taggedNotes": "الملاحظات الموسومة",
+    "trash": "المهملات",
+    "emptyTrash": "تفريغ المهملات",
+    "noNotes": "لا توجد ملاحظات بعد",
+    "trashEmpty": "المهملات فارغة",
+    "createFirst": "أنشئ ملاحظتك الأولى",
+    "newNote": "ملاحظة جديدة",
+    "restoreNote": "استعادة الملاحظة",
+    "deletePermanently": "حذف نهائي",
+    "pinNote": "تثبيت الملاحظة",
+    "unpinNote": "إلغاء تثبيت الملاحظة",
+    "deleteNote": "حذف الملاحظة"
+  },
+  "editor": {
+    "selectOrCreate": "حدد ملاحظة أو أنشئ واحدة جديدة",
+    "startWriting": "ابدأ الكتابة...",
+    "addTag": "إضافة وسم...",
+    "trashBanner": "هذه الملاحظة في المهملات ولا يمكن تعديلها.",
+    "pinNote": "تثبيت الملاحظة",
+    "unpinNote": "إلغاء تثبيت الملاحظة",
+    "exportMarkdown": "تصدير كـ Markdown",
+    "exportText": "تصدير كنص",
+    "deleteNote": "حذف الملاحظة",
+    "created": "تم الإنشاء {time}",
+    "updated": "تم التحديث {time}",
+    "toolbar": {
+      "bold": "عريض",
+      "italic": "مائل",
+      "strikethrough": "يتوسطه خط",
+      "heading1": "عنوان 1",
+      "heading2": "عنوان 2",
+      "heading3": "عنوان 3",
+      "bulletList": "قائمة نقطية",
+      "orderedList": "قائمة مرقمة",
+      "taskList": "قائمة مهام",
+      "codeBlock": "كتلة كود",
+      "blockquote": "اقتباس",
+      "horizontalRule": "خط أفقي"
+    }
+  }
+}

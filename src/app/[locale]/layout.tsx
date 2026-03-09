@@ -34,8 +34,11 @@ export default async function LocaleLayout({
 
   const messages = await getMessages({ locale });
 
+  const RTL_LOCALES = ["ar", "he", "fa", "ur"];
+  const dir = RTL_LOCALES.includes(locale) ? "rtl" : "ltr";
+
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <body className="antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
