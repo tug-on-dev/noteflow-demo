@@ -16,6 +16,7 @@ A modern, private, offline-first note-taking application built with Next.js.
 - 🔍 Full-text search
 - 🌙 Dark/light/system theme
 - 💾 Fully offline — all data stored in `localStorage`
+- 🌐 Available in English, French, Italian, and Arabic (with RTL support)
 - 📤 Export notes as Markdown or plain text
 
 ## Getting Started
